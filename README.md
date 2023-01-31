@@ -17,7 +17,7 @@ Rest API request for Postman Rest API:
 
 _________________________________________________________________________________________________
 
-command prompt and Chrome browser synatx for REST API:
+Command Prompt and Chrome or any browser cURL syntax for REST API:
 
 1. Save student: curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"milind\",\"email\":\"milind@gmail.com\"}" http://localhost:8080/student
 2. Get student by Id: curl http://localhost:8080/student/1
