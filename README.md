@@ -9,11 +9,11 @@ Rest API request for Postman Rest API:
 4. Update a student:  PUT http://localhost:8080/student/5
 5. Delete a student:  DELETE http://localhost:8080/student/6
 
-![image](https://user-images.githubusercontent.com/116196255/215579555-229506d6-6625-4edd-bba0-9a281da09d37.png)
-![image](https://user-images.githubusercontent.com/116196255/215579648-a2e27464-3325-4caa-b176-f28812a7fa25.png)
-![image](https://user-images.githubusercontent.com/116196255/215579691-f216d5e4-0591-4e97-b1d9-e8675ffebf1f.png)
-![image](https://user-images.githubusercontent.com/116196255/215579802-732bb11c-b0b1-40b2-9caa-6ff5ddb7e7b6.png)
-![image](https://user-images.githubusercontent.com/116196255/215579845-a49a3543-7b8e-4245-a1db-2b532d1a9aab.png)
+![image](https://user-images.githubusercontent.com/116196255/215650470-713e4132-c0bc-450f-98cc-a1dc48de6edf.png)
+![image](https://user-images.githubusercontent.com/116196255/215650598-86a20c11-1527-4b5b-9d7c-ba6be8046daf.png)
+![image](https://user-images.githubusercontent.com/116196255/215650650-defc21ed-9141-4ec5-bb34-34c26371f996.png)
+![image](https://user-images.githubusercontent.com/116196255/215650923-791735b4-d4ca-4902-a8b2-16d035d13a1f.png)
+![image](https://user-images.githubusercontent.com/116196255/215651029-efc30f06-3430-4536-92ac-b52f915820c2.png)
 
 _________________________________________________________________________________________________
 
