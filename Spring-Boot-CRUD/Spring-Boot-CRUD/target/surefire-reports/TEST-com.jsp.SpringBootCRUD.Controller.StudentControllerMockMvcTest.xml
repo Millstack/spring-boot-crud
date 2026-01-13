@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.jsp.SpringBootCRUD.SpringBootCrudApplicationTests" time="6.966" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="1.543" tests="13" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -53,5 +53,17 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="contextLoads" classname="com.jsp.SpringBootCRUD.SpringBootCrudApplicationTests" time="0.104"/>
+  <testcase name="testSaveStudent" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.403"/>
+  <testcase name="testUpdateStudent" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.024"/>
+  <testcase name="testGetStudentByIdNotFound" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.017"/>
+  <testcase name="testGetStudentByIdWithInvalidPathVariable" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.02"/>
+  <testcase name="testSaveStudentWithEmptyBody" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.019"/>
+  <testcase name="testSaveStudentWithEmptyName" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.016"/>
+  <testcase name="testDeleteStudent" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.014"/>
+  <testcase name="testDeleteStudentNotFound" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.011"/>
+  <testcase name="testGetAllStudents" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.023"/>
+  <testcase name="testGetStudentById" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.012"/>
+  <testcase name="testUpdateStudentNotFound" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.015"/>
+  <testcase name="testSaveStudentWithInvalidJson" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.01"/>
+  <testcase name="testSaveStudentWithInvalidEmail" classname="com.jsp.SpringBootCRUD.Controller.StudentControllerMockMvcTest" time="0.015"/>
 </testsuite>

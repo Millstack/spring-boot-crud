@@ -26,7 +26,7 @@ public class StudentService {
 			responseStructure.setMessage("Student saved successfully");
 		} else {
 			responseStructure.setData(null);
-			responseStructure.setStatusCode(HttpStatus.CREATED.value());
+			responseStructure.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			responseStructure.setMessage("Student has failed to save");
 		}
 		return responseStructure;
@@ -38,12 +38,12 @@ public class StudentService {
 		Student student = studentDao.getStudentById(id);
 		if(student != null) {
 			responseStructure.setData(student);
-			responseStructure.setStatusCode(HttpStatus.CREATED.value());
-			responseStructure.setMessage("Student got by id");
+			responseStructure.setStatusCode(HttpStatus.OK.value());
+			responseStructure.setMessage("Student retrieved successfully");
 		} else {
 			responseStructure.setData(null);
-			responseStructure.setStatusCode(HttpStatus.CREATED.value());
-			responseStructure.setMessage("Student don't exists");
+			responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+			responseStructure.setMessage("Student not found");
 		}
 		return responseStructure;
 	}
@@ -52,15 +52,9 @@ public class StudentService {
 	public ResponseStructure<List<Student>> getAllStudent(){
 		ResponseStructure<List<Student>> responseStructure = new ResponseStructure<List<Student>>();
 		List<Student> student = studentDao.getAllStudent();
-		if(student.size() > 0) {
-			responseStructure.setData(student);
-			responseStructure.setStatusCode(HttpStatus.CREATED.value());
-			responseStructure.setMessage("Here are the list of all Students");
-		} else {
-			responseStructure.setData(null);
-			responseStructure.setStatusCode(HttpStatus.CREATED.value());
-			responseStructure.setMessage("No student record exists in database");
-		}
+		responseStructure.setData(student);
+		responseStructure.setStatusCode(HttpStatus.OK.value());
+		responseStructure.setMessage("Students retrieved successfully");
 		return responseStructure;
 	}
 	
@@ -70,12 +64,12 @@ public class StudentService {
 		Student student1 = studentDao.updateStudent(student, id);
 		if(student1 != null) {
 			responseStructure.setData(student1);
-			responseStructure.setStatusCode(HttpStatus.CREATED.value());
+			responseStructure.setStatusCode(HttpStatus.OK.value());
 			responseStructure.setMessage("Student updated successfully");
 		} else {
 			responseStructure.setData(null);
-			responseStructure.setStatusCode(HttpStatus.CREATED.value());
-			responseStructure.setMessage("Student don't exists");
+			responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+			responseStructure.setMessage("Student not found for update");
 		}
 		return responseStructure;
 	}
@@ -85,13 +79,13 @@ public class StudentService {
 		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
 		boolean isTrue = studentDao.deleteStudent(id);
 		if(isTrue) {
-			responseStructure.setData("Student selected");
+			responseStructure.setData("Student deleted");
 			responseStructure.setStatusCode(HttpStatus.OK.value());
 			responseStructure.setMessage("Student deleted successfully");
 		} else {
-			responseStructure.setData("Student not selected");
-			responseStructure.setStatusCode(HttpStatus.OK.value());
-			responseStructure.setMessage("Student has failed to get delete");
+			responseStructure.setData(null);
+			responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+			responseStructure.setMessage("Student not found for deletion");
 		}
 		return responseStructure;
 	}

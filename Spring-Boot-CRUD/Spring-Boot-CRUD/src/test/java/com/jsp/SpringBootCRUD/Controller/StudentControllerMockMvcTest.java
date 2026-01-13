@@ -1,0 +1,261 @@
+package com.jsp.SpringBootCRUD.Controller;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsp.SpringBootCRUD.Dto.ResponseStructure;
+import com.jsp.SpringBootCRUD.Dto.Student;
+import com.jsp.SpringBootCRUD.Service.StudentService;
+
+@WebMvcTest(StudentController.class)
+public class StudentControllerMockMvcTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private StudentService studentService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    private Student student;
+    private ResponseStructure<Student> successResponse;
+    private ResponseStructure<String> deleteResponse;
+
+    @BeforeEach
+    void setUp() {
+        student = new Student();
+        student.setId(1);
+        student.setName("John Doe");
+        student.setEmail("john@example.com");
+
+        successResponse = new ResponseStructure<>();
+        successResponse.setStatusCode(200);
+        successResponse.setMessage("Student retrieved successfully");
+        successResponse.setData(student);
+
+        deleteResponse = new ResponseStructure<>();
+        deleteResponse.setStatusCode(200);
+        deleteResponse.setMessage("Student deleted successfully");
+        deleteResponse.setData("Student deleted");
+    }
+
+    @Test
+    void testSaveStudent() throws Exception {
+        ResponseStructure<Student> saveResponse = new ResponseStructure<>();
+        saveResponse.setStatusCode(201);
+        saveResponse.setMessage("Student saved successfully");
+        saveResponse.setData(student);
+
+        when(studentService.saveStudent(any(Student.class))).thenReturn(saveResponse);
+
+        mockMvc.perform(post("/student")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(student)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(201))
+                .andExpect(jsonPath("$.message").value("Student saved successfully"))
+                .andExpect(jsonPath("$.data.name").value("John Doe"))
+                .andExpect(jsonPath("$.data.email").value("john@example.com"));
+    }
+
+    @Test
+    void testGetStudentById() throws Exception {
+        when(studentService.getStudentById(1)).thenReturn(successResponse);
+
+        mockMvc.perform(get("/student/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(200))
+                .andExpect(jsonPath("$.message").value("Student retrieved successfully"))
+                .andExpect(jsonPath("$.data.id").value(1))
+                .andExpect(jsonPath("$.data.name").value("John Doe"));
+    }
+
+    @Test
+    void testGetAllStudents() throws Exception {
+        List<Student> students = Arrays.asList(student);
+        ResponseStructure<List<Student>> listResponse = new ResponseStructure<>();
+        listResponse.setStatusCode(200);
+        listResponse.setMessage("Students retrieved successfully");
+        listResponse.setData(students);
+
+        when(studentService.getAllStudent()).thenReturn(listResponse);
+
+        mockMvc.perform(get("/student"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(200))
+                .andExpect(jsonPath("$.message").value("Students retrieved successfully"))
+                .andExpect(jsonPath("$.data[0].name").value("John Doe"));
+    }
+
+    @Test
+    void testUpdateStudent() throws Exception {
+        ResponseStructure<Student> updateResponse = new ResponseStructure<>();
+        updateResponse.setStatusCode(200);
+        updateResponse.setMessage("Student updated successfully");
+        updateResponse.setData(student);
+
+        when(studentService.updateStudent(any(Student.class), eq(1))).thenReturn(updateResponse);
+
+        mockMvc.perform(put("/student/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(student)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(200))
+                .andExpect(jsonPath("$.message").value("Student updated successfully"))
+                .andExpect(jsonPath("$.data.name").value("John Doe"));
+    }
+
+    @Test
+    void testDeleteStudent() throws Exception {
+        when(studentService.deleteStudent(1)).thenReturn(deleteResponse);
+
+        mockMvc.perform(delete("/student/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(200))
+                .andExpect(jsonPath("$.message").value("Student deleted successfully"))
+                .andExpect(jsonPath("$.data").value("Student deleted"));
+    }
+
+    @Test
+    void testGetStudentByIdNotFound() throws Exception {
+        ResponseStructure<Student> notFoundResponse = new ResponseStructure<>();
+        notFoundResponse.setStatusCode(404);
+        notFoundResponse.setMessage("Student not found");
+
+        when(studentService.getStudentById(999)).thenReturn(notFoundResponse);
+
+        mockMvc.perform(get("/student/999"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Student not found"));
+    }
+
+    // Negative Test Cases
+
+    @Test
+    void testUpdateStudentNotFound() throws Exception {
+        ResponseStructure<Student> notFoundResponse = new ResponseStructure<>();
+        notFoundResponse.setStatusCode(404);
+        notFoundResponse.setMessage("Student not found for update");
+
+        when(studentService.updateStudent(any(Student.class), eq(999))).thenReturn(notFoundResponse);
+
+        mockMvc.perform(put("/student/999")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(student)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Student not found for update"));
+    }
+
+    @Test
+    void testDeleteStudentNotFound() throws Exception {
+        ResponseStructure<String> notFoundResponse = new ResponseStructure<>();
+        notFoundResponse.setStatusCode(404);
+        notFoundResponse.setMessage("Student not found for deletion");
+
+        when(studentService.deleteStudent(999)).thenReturn(notFoundResponse);
+
+        mockMvc.perform(delete("/student/999"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Student not found for deletion"));
+    }
+
+    @Test
+    void testSaveStudentWithInvalidEmail() throws Exception {
+        Student invalidStudent = new Student();
+        invalidStudent.setId(1);
+        invalidStudent.setName("John Doe");
+        invalidStudent.setEmail("invalid-email"); // Invalid email format
+
+        ResponseStructure<Student> saveResponse = new ResponseStructure<>();
+        saveResponse.setStatusCode(400);
+        saveResponse.setMessage("Invalid email format");
+        saveResponse.setData(invalidStudent);
+
+        when(studentService.saveStudent(any(Student.class))).thenReturn(saveResponse);
+
+        mockMvc.perform(post("/student")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalidStudent)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.message").value("Invalid email format"));
+    }
+
+    @Test
+    void testSaveStudentWithEmptyName() throws Exception {
+        Student emptyNameStudent = new Student();
+        emptyNameStudent.setId(1);
+        emptyNameStudent.setName(""); // Empty name
+        emptyNameStudent.setEmail("john@example.com");
+
+        ResponseStructure<Student> saveResponse = new ResponseStructure<>();
+        saveResponse.setStatusCode(400);
+        saveResponse.setMessage("Name is required");
+        saveResponse.setData(emptyNameStudent);
+
+        when(studentService.saveStudent(any(Student.class))).thenReturn(saveResponse);
+
+        mockMvc.perform(post("/student")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(emptyNameStudent)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.message").value("Name is required"));
+    }
+
+    @Test
+    void testSaveStudentWithInvalidJson() throws Exception {
+        String invalidJson = "{invalid json}";
+
+        mockMvc.perform(post("/student")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testSaveStudentWithEmptyBody() throws Exception {
+        String emptyBody = "{}";
+
+        ResponseStructure<Student> saveResponse = new ResponseStructure<>();
+        saveResponse.setStatusCode(400);
+        saveResponse.setMessage("Invalid request body");
+        saveResponse.setData(null);
+
+        when(studentService.saveStudent(any(Student.class))).thenReturn(saveResponse);
+
+        mockMvc.perform(post("/student")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(emptyBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.message").value("Invalid request body"));
+    }
+
+    @Test
+    void testGetStudentByIdWithInvalidPathVariable() throws Exception {
+        mockMvc.perform(get("/student/abc"))
+                .andExpect(status().isBadRequest());
+    }
+}
