@@ -62,6 +62,10 @@ public class StudentControllerMockMvcTest {
         deleteResponse.setData("Student deleted");
     }
 
+    /**
+     * Test case for saving a new student via POST request.
+     * Verifies that the student is saved successfully and returns appropriate response.
+     */
     @Test
     void testSaveStudent() throws Exception {
         ResponseStructure<Student> saveResponse = new ResponseStructure<>();
@@ -81,6 +85,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.data.email").value("john@example.com"));
     }
 
+    /**
+     * Test case for retrieving a student by ID via GET request.
+     * Verifies that the correct student is retrieved and returned in the response.
+     */
     @Test
     void testGetStudentById() throws Exception {
         when(studentService.getStudentById(1)).thenReturn(successResponse);
@@ -93,6 +101,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.data.name").value("John Doe"));
     }
 
+    /**
+     * Test case for retrieving all students via GET request.
+     * Verifies that all students are retrieved and returned in a list format.
+     */
     @Test
     void testGetAllStudents() throws Exception {
         List<Student> students = Arrays.asList(student);
@@ -110,6 +122,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.data[0].name").value("John Doe"));
     }
 
+    /**
+     * Test case for updating an existing student via PUT request.
+     * Verifies that the student is updated successfully and returns appropriate response.
+     */
     @Test
     void testUpdateStudent() throws Exception {
         ResponseStructure<Student> updateResponse = new ResponseStructure<>();
@@ -128,6 +144,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.data.name").value("John Doe"));
     }
 
+    /**
+     * Test case for deleting a student by ID via DELETE request.
+     * Verifies that the student is deleted successfully and returns confirmation message.
+     */
     @Test
     void testDeleteStudent() throws Exception {
         when(studentService.deleteStudent(1)).thenReturn(deleteResponse);
@@ -139,6 +159,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.data").value("Student deleted"));
     }
 
+    /**
+     * Test case for retrieving a non-existent student by ID.
+     * Verifies that appropriate 404 error response is returned when student is not found.
+     */
     @Test
     void testGetStudentByIdNotFound() throws Exception {
         ResponseStructure<Student> notFoundResponse = new ResponseStructure<>();
@@ -155,6 +179,10 @@ public class StudentControllerMockMvcTest {
 
     // Negative Test Cases
 
+    /**
+     * Test case for updating a non-existent student.
+     * Verifies that appropriate 404 error response is returned when student to update is not found.
+     */
     @Test
     void testUpdateStudentNotFound() throws Exception {
         ResponseStructure<Student> notFoundResponse = new ResponseStructure<>();
@@ -171,6 +199,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.message").value("Student not found for update"));
     }
 
+    /**
+     * Test case for deleting a non-existent student.
+     * Verifies that appropriate 404 error response is returned when student to delete is not found.
+     */
     @Test
     void testDeleteStudentNotFound() throws Exception {
         ResponseStructure<String> notFoundResponse = new ResponseStructure<>();
@@ -185,6 +217,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.message").value("Student not found for deletion"));
     }
 
+    /**
+     * Test case for saving a student with invalid email format.
+     * Verifies that appropriate validation error response is returned for invalid email.
+     */
     @Test
     void testSaveStudentWithInvalidEmail() throws Exception {
         Student invalidStudent = new Student();
@@ -207,6 +243,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.message").value("Invalid email format"));
     }
 
+    /**
+     * Test case for saving a student with empty name field.
+     * Verifies that appropriate validation error response is returned for empty name.
+     */
     @Test
     void testSaveStudentWithEmptyName() throws Exception {
         Student emptyNameStudent = new Student();
@@ -229,6 +269,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.message").value("Name is required"));
     }
 
+    /**
+     * Test case for saving a student with invalid JSON format.
+     * Verifies that appropriate bad request response is returned for malformed JSON.
+     */
     @Test
     void testSaveStudentWithInvalidJson() throws Exception {
         String invalidJson = "{invalid json}";
@@ -239,6 +283,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Test case for saving a student with empty request body.
+     * Verifies that appropriate validation error response is returned for empty request body.
+     */
     @Test
     void testSaveStudentWithEmptyBody() throws Exception {
         String emptyBody = "{}";
@@ -258,6 +306,10 @@ public class StudentControllerMockMvcTest {
                 .andExpect(jsonPath("$.message").value("Invalid request body"));
     }
 
+    /**
+     * Test case for retrieving a student with invalid path variable format.
+     * Verifies that appropriate bad request response is returned for invalid ID format.
+     */
     @Test
     void testGetStudentByIdWithInvalidPathVariable() throws Exception {
         mockMvc.perform(get("/student/abc"))
