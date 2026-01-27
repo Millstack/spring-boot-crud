@@ -39,6 +39,11 @@ public class StudentControllerMockMvcTest {
     private ResponseStructure<Student> successResponse;
     private ResponseStructure<String> deleteResponse;
 
+    /**
+     * Setup method that runs before each test.
+     * Initializes test data including a sample student object and response structures
+     * that will be used across multiple test methods for mocking service responses.
+     */
     @BeforeEach
     void setUp() {
         student = new Student();
